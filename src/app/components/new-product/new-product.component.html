@@ -1,0 +1,174 @@
+<div class="container">
+  <div class="col-md-12 mt-2">
+    <h4>New Product</h4>
+
+    <form [formGroup]="productForm">
+      <div class="form-group row">
+        <label for="productName" class="col-sm-2 col-form-label"
+          >Product Name</label
+        >
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+            type="text"
+            name="productName"
+            placeholder="{{ placeHolderMessages.productName }}"
+            formControlName="productName"
+            [ngClass]="{
+              'is-invalid': hasSubmitted && formControls.productName.errors,
+              'is-valid': hasSubmitted && !formControls.productName.errors
+            }"
+          />
+
+          <ng-container
+            *ngFor="let validation of validationMessages.productName"
+          >
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                formControls.productName.hasError(validation.type) &&
+                (formControls.productName.pristine ||
+                  formControls.productName.dirty ||
+                  formControls.productName.touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="productID" class="col-sm-2 col-form-label"
+          >Product Id
+        </label>
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+            type="text"
+            name="productID"
+            formControlName="productID"
+            placeholder="{{ placeHolderMessages.productID }}"
+            [ngClass]="{
+              'is-invalid': hasSubmitted && formControls.productID.errors,
+              'is-valid': hasSubmitted && formControls.productID.errors
+            }"
+          />
+
+          <ng-container *ngFor="let validation of validationMessages.productID">
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                formControls.productID.hasError(validation.type) &&
+                (formControls.productID.pristine ||
+                  formControls.productID.dirty ||
+                  formControls.productID.touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="productManager" class="col-sm-2 col-form-label"
+          >Product Manager
+        </label>
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+            type="text"
+            name="productManager"
+            formControlName="productManager"
+            placeholder="{{ placeHolderMessages.productManager }}"
+            [ngClass]="{
+              'is-invalid': hasSubmitted && formControls.productManager.errors
+            }"
+          />
+
+          <ng-container
+            *ngFor="let validation of validationMessages.productManager"
+          >
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                formControls.productManager.hasError(validation.type) &&
+                (formControls.productManager.pristine ||
+                  formControls.productManager.dirty ||
+                  formControls.productManager.touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="salesDateStart" class="col-sm-2 col-form-label"
+          >Sales Start
+        </label>
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+            type="date"
+            [min]="minDate | date: 'yyyy-MM-dd'"
+            [max]="maxDate | date: 'yyyy-MM-dd'"
+            name="salesDateStart"
+            formControlName="salesDateStart"
+            [ngClass]="{
+              'is-invalid': hasSubmitted && formControls.salesDateStart.errors,
+              'is-valid': hasSubmitted && !formControls.salesDateStart.errors
+            }"
+          />
+          <ng-container
+            *ngFor="let validation of validationMessages.salesDateStart"
+          >
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                formControls.salesDateStart.hasError(validation.type) &&
+                (formControls.salesDateStart.pristine ||
+                  formControls.salesDateStart.dirty ||
+                  formControls.salesDateStart.touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-12 d-flex justify-content-center">
+          <div class="col-md-2">
+            <button
+              [disabled]="isLoading"
+              class="btn btn-primary btn-sm btn-block"
+              (click)="submitForm()"
+            >
+              <span
+                *ngIf="isLoading"
+                class="spinner-border spinner-border-sm mr-1"
+              ></span>
+              Submit
+            </button>
+          </div>
+          <div class="col-md-2 col-push-2">
+            <button
+              [disabled]="isLoading"
+              class="btn btn-secondary btn-sm btn-block"
+              (click)="clearForm()"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="(formObjectValues | json) != '{}'" class="card bg-light">
+      <div class="card-body">{{ formObjectValues | json }}</div>
+    </div>
+  </div>
+</div>

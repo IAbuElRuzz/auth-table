@@ -1,0 +1,74 @@
+<div class="container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        formControlName="username"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': hasSubmitted && formControls.username.errors,
+          'is-valid': hasSubmitted && !formControls.username.errors
+        }"
+      />
+      <ng-container *ngFor="let validation of validationMessages.username">
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            formControls.username.hasError(validation.type) &&
+            (formControls.username.pristine ||
+              formControls.username.dirty ||
+              formControls.username.touched)
+          "
+        >
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        autocomplete="on"
+        formControlName="password"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': hasSubmitted && formControls.password.errors,
+          'is-valid': hasSubmitted && !formControls.password.errors
+        }"
+      />
+      <ng-container *ngFor="let validation of validationMessages.password">
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            formControls.password.hasError(validation.type) &&
+            (formControls.password.pristine ||
+              formControls.password.dirty ||
+              formControls.password.touched)
+          "
+        >
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <div class="form-group">
+      <button [disabled]="isLoading" class="btn btn-primary">
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm mr-1"
+        ></span>
+        Login
+      </button>
+    </div>
+  </form>
+
+  <div class="card bg-light">
+    <div class="card-body">
+      <ul class="list-unstyled">
+        <li>Username: John</li>
+        <li>Password: jKiLrD958</li>
+      </ul>
+    </div>
+  </div>
+</div>

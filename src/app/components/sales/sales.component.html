@@ -1,0 +1,138 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <div class="form-group has-search">
+        <span class="fa fa-search form-control-feedback"></span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <table class="table table-bordered">
+        <thead *ngIf="tableViewHeader">
+          <tr>
+            <ng-container *ngFor="let elem of tableViewHeader; let i = index">
+              <th *ngIf="i !== 2" rowspan="2">
+                <span>
+                  {{ elem.header }}
+                  <i
+                    (click)="sortElements(elem.field, $event)"
+                    class="bi-sort-down"
+                  ></i
+                ></span>
+              </th>
+              <th class="text-center" *ngIf="i === 2" colspan="4">
+                <span> {{ elem.header }}</span>
+              </th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container *ngFor="let elem of tableViewHeader; let i = index">
+              <th *ngFor="let sub of elem.subHeaders">
+                <span>
+                  {{ sub.field }}
+                  <i
+                    class="bi-sort-down"
+                    (click)="sortElements(sub.field, $event)"
+                  ></i
+                ></span>
+              </th>
+            </ng-container>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="tableViewData">
+
+            <tr *ngFor=" let elem of tableViewData | tableFilter: searchTerm;  let i = index ">
+             <ng-container  *ngIf="enabledFormIndex !== i">
+                 <td *ngFor="let item of elem | keyvalue">{{ item.value }}</td>
+               </ng-container>
+
+                 <ng-container *ngFor="let row of rowTableArrayControls.controls">
+                      <ng-container  *ngIf="enabledFormIndex === i" [formGroup]="row">
+                        <td *ngFor="let item of elem | keyvalue">
+                          <input class="form-control editTable" type="text" formControlName="{{item.key}}"
+                          [ngClass]="getTableInvalidClass(row,item.key)"
+                          />
+                            <ng-container
+                            *ngFor="let validation of validationMessages[item.key]"
+                          >
+                            <div
+                              class="invalid-feedback"
+                              *ngIf="getTableFormErrors(row,item.key, validation)"
+                            >
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </td>
+                    </ng-container>
+                  </ng-container>
+                  <td>
+                    <button
+                        id="{{ i }}"
+                        type="button"
+                        [ngClass]="'btn btn-primary btn-sm'"
+                        (click)="onClickBtn(i)"
+                         #clickButtons>
+                        {{ editOrSave }}
+                    </button>
+                </td>
+             </tr>
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col-md-12 mt-3">
+    <form [formGroup]="productForm" *ngIf="bottomFormVisible">
+      <div class="row">
+        <ng-container *ngFor="let elem of tableViewData; let i = index">
+          <ng-container *ngIf="i === 1">
+            <div class="col-sm-2" *ngFor="let obj of elem | keyvalue">
+              <input
+                *ngIf="obj.key !== 'totalSales'"
+                type="text"
+                class="form-control"
+                placeholder="{{ obj.key }}"
+                name="{{ obj.key }}"
+                formControlName="{{ obj.key }}"
+                [ngClass]="getInvalidClass(obj.key)"
+              />
+              <ng-container
+                *ngFor="let validation of validationMessages[obj.key]"
+              >
+                <div
+                  class="invalid-feedback"
+                  *ngIf="getFormErrors(obj.key, validation)"
+                >
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </form>
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-4 mt-3">
+        <button
+          [disabled]="isLoading"
+          class="btn btn-primary btn-sm btn-block"
+          (click)="submitFormData()"
+          #newProductBtn
+        >
+          Add Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
